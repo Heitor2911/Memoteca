@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formPensamento = document.getElementById('pensamento-form')
     formPensamento.addEventListener('submit', manipularSubmitFormulario)
+    
+    const  botaoCancelar = document.getElementById('botao-cancelar')
+    botaoCancelar.addEventListener('click', manipularCancelamento)
 })
 
 async function manipularSubmitFormulario(event) {
@@ -21,4 +24,8 @@ async function manipularSubmitFormulario(event) {
     catch {
         alert('Erro ao salvar pensamento.')
     }
+}
+
+async function manipularCancelamento() {
+    ui.limparFormulario()
 }

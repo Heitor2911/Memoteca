@@ -25,9 +25,20 @@ const api = {
             alert('Ocorreu um erro ao buscar pensamentos.')
             throw error 
         }
+    },
+
+    async cancelarPensamento(pensamento) {
+        try {
+            await fetch(`http://localhost:3000/pensamentos/${pensamento.id}`, {
+                method: 'DELETE'
+            })
+        } 
+        catch {
+            alert('Ocorreu um erro ao cancelar pensamento.')
+            throw error 
+        }
     }
     
-
 }
 
 export default api;

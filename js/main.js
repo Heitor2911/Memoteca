@@ -1,8 +1,9 @@
 import ui from "./ui.js"
 import api from "./api.js"
 
+// O código principal do aplicativo, responsável por inicializar a interface e lidar com eventos de formulário
 document.addEventListener("DOMContentLoaded", () => {
-    ui.renderizarPensamentos()
+    ui.renderizarPensamentos() // Chama a função para renderizar os pensamentos assim que o DOM estiver carregado
 
     const formPensamento = document.getElementById('pensamento-form')
     formPensamento.addEventListener('submit', manipularSubmitFormulario)
@@ -18,7 +19,11 @@ async function manipularSubmitFormulario(event) {
     const autoria = document.getElementById('pensamento-autoria').value
 
     try {
-        await api.salvarPensamentos({ conteudo, autoria})
+        if (id) {
+            await api.editarPensamento({ id, conteudo, autoria})
+        } else {
+            await api.salvarPensamentos({ conteudo, autoria})
+        }
         ui.renderizarPensamentos()
     } 
     catch {

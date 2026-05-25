@@ -11,6 +11,7 @@ const ui = {
 
     async renderizarPensamentos() {
         const listaPensamentos = document.getElementById('lista-pensamentos')
+        listaPensamentos.innerHTML = '' // Limpa a lista antes de renderizar novamente
 
         try {
             const pensamentos = await api.buscarPensamentos()
@@ -32,10 +33,12 @@ const ui = {
         iconeAspas.alt = 'Aspas azuis'
         iconeAspas.classList.add('icone-aspas')
 
+        // Cria o elemento para o conteúdo do pensamento
         const conteudoPensamento = document.createElement('div')
         conteudoPensamento.textContent = pensamento.conteudo
         conteudoPensamento.classList.add('pensamento-conteudo')
 
+        // Cria o elemento para a autoria do pensamento
         const autoriaPensamento = document.createElement('div')
         autoriaPensamento.textContent = pensamento.autoria
         autoriaPensamento.classList.add('pensamento-autoria')
@@ -49,9 +52,28 @@ const ui = {
         iconeEditar.alt = 'Editar'
         botaoEditar.appendChild(iconeEditar)
 
+        const botaoExcluir = document.createElement('button')
+        botaoExcluir.classList.add('botao-excluir')
+        botaoExcluir.onclick = async () => {
+            try {
+                await api.deletarPensamento(pensamento.id)
+                ui.renderizarPensamentos() // Re-renderiza a lista de pensamentos após a exclusão
+            }
+            catch {
+                alert('Erro ao excluir pensamento.')
+            }
+        }
+
+        const iconeExcluir = document.createElement('img')
+        iconeExcluir.src = 'assets/imagens/icone-excluir.png'
+        iconeExcluir.alt = 'Excluir'
+        botaoExcluir.appendChild(iconeExcluir)
+
+        // Cria um container para os botões de ação (editar e excluir)
         const icones = document.createElement('div')
         icones.classList.add('icones')
         icones.appendChild(botaoEditar)
+        icones.appendChild(botaoExcluir)
 
         // Adiciona os itens à li e depois à lista
         li.appendChild(iconeAspas)
@@ -64,6 +86,26 @@ const ui = {
     // Função para limpar o formulário antes do envio
     async limparFormulario() {
         document.getElementById('pensamento-form').reset();
+    },
+
+    // Função para caso não haja nenhum pensamento cadastrado
+
+    listaVazia() {
+        const listaContainer = document.getElementById('lista-pensamentos-container');
+
+        const mensagem = document.createElement('p');
+        mensagem.textContent = 'Nenhum pensamento cadastrado. Que tal compartilhar algo?';
+
+        const imagem = document.createElement('img');
+        imagem.src = 'assets/imagens/lista-vazia.png';
+        imagem.alt = 'Lista vazia';
+
+        const vazio = document.createElement('div');
+        vazio.classList.add('lista-vazia');
+        vazio.appendChild(imagem);
+        vazio.appendChild(mensagem);
+
+        listaContainer.appendChild(vazio);
     }
 }
 
